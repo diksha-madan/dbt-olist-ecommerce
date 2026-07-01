@@ -1,0 +1,30 @@
+version: 2
+
+models:
+  
+- name: fact_orders
+  columns:
+    - name: order_id
+      tests:
+        - not_null
+        - unique
+    - name: is_missing_delivery_timestamp
+  description: Indicates orders marked as delivered but missing a customer delivery timestamp. Used for data quality monitoring and downstream filtering.
+
+- name: fact_order_items
+  tests:
+    - dbt_utils.unique_combination_of_columns:
+        arguments:
+          combination_of_columns : ['order_id', 'order_item_id']
+
+
+- name: fact_payments
+  tests:
+    - dbt_utils.unique_combination_of_columns:
+        arguments:
+          combination_of_columns : ['order_id', 'payment_sequential']
+
+
+    
+        
+        

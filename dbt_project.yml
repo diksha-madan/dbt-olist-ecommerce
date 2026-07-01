@@ -45,3 +45,19 @@ models:
     intermediate:
       +schema: olist_silver
       +materialized: table
+
+    dimensions:
+      +materialized: table
+      +schema: olist_gold
+
+    facts:
+      +materialized: table
+      +schema: olist_gold
+
+    marts:
+      +materialized: table
+      +schema: olist_mart
+
+    audit:
+      +materialized: view
+      +schema: olist_audit

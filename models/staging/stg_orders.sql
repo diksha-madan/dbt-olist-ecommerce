@@ -1,5 +1,15 @@
+{{
+    config(
+        materialized='incremental',
+        unique_key='order_id',
+        incremental_strategy = 'merge'
+    )
+}}
+
+
 with source as(
-    select * from {{source('raw', 'olist_orders_dataset')}}
+    select * from {{source('raw', 'orders')}}
+     {{cdc_filter_merge()}}
 ),
 
 renamed as(
@@ -7,11 +17,15 @@ renamed as(
     order_id,
     customer_id,
     order_status,
-    {{parse_timestamp('order_purchase_timestamp')}} as order_purchase_ts,
-    {{parse_timestamp('order_approved_at')}} as order_approved_ts,
-    {{parse_timestamp('order_delivered_customer_date')}} as delivered_customer_ts,
-    {{parse_timestamp('order_estimated_delivery_date')}} as estimated_delivery_ts
+    order_purchase_timestamp_updated,
+    order_approved_at_updated,
+    order_delivered_customer_date_updated,
+    order_estimated_delivery_date_updated,
+    record_updated_at
     from source
+
+   
+
 )
 
 select * from renamed

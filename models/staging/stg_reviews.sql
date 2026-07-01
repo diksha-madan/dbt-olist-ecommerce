@@ -1,16 +1,31 @@
+{{
+    config(
+        materialized='incremental',
+        incremental_strategy='insert_overwrite',
+        partition_by = ['partition_date']
+    )
+}}
+
+
 with source as(
-    select * from {{source('raw', 'olist_order_reviews_dataset')}}
+    select * from {{source('raw', 'reviews')}}
+     {{cdc_filter_insert_overwrite()}}
 ),
 
-valid_orders as(
-    select order_id
-    from {{ref('stg_orders')}}
+deduplicated as(
+    select * from 
+    (
+        select *, row_number() over (partition by review_id order by record_updated_at desc) as rn
+        from source
+    )
+    where rn=1
 ),
+
 
 renamed as(
     select
     review_id,
-    source.order_id,
+    order_id,
     case 
         when review_score rlike '^[1-5]$'
         then cast(review_score as int)
@@ -19,12 +34,13 @@ renamed as(
      as review_score,
     review_comment_title,
     review_comment_message,
-    {{parse_timestamp('review_creation_date')}} as review_creation_ts,
-    {{parse_timestamp('review_answer_timestamp')}} as review_answer_ts
-    from source
-    join valid_orders
-    on source.order_id = valid_orders.order_id
-    WHERE review_id is NOT NULL
+    review_creation_date_updated,
+    review_answer_timestamp_updated,
+    record_updated_at,
+    cast(record_updated_at as date) as partition_date
+    from deduplicated
+
+   
 )
 
 select * from renamed
