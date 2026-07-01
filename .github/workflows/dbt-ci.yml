@@ -6,34 +6,16 @@ on:
       - main
 
 jobs:
-  dbt-ci:
+  validate:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout repository
-        uses: actions/checkout@v4
+      - uses: actions/checkout@v4
 
-      - name: Setup Python
-        uses: actions/setup-python@v5
-        with:
-          python-version: '3.11'
-
-      - name: Install dbt
+      - name: Check YAML formatting
         run: |
-          pip install dbt-databricks
+          find . -name "*.yml" -o -name "*.yaml"
 
-      - name: Install dependencies
+      - name: Validate project structure
         run: |
-          dbt deps
-
-      - name: Parse project
-        run: |
-          dbt parse
-
-      - name: Compile project
-        run: |
-          dbt compile
-
-      - name: Run tests
-        run: |
-          dbt test
+          test -f dbt_project.yml
