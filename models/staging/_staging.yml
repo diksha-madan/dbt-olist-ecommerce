@@ -2,6 +2,7 @@ version: 2
 
 models:
   - name: stg_orders
+    description: Staging model containing cleaned order-level information.
     columns:
       - name: order_id
         tests: 
@@ -9,13 +10,16 @@ models:
           - not_null
 
       - name: customer_id
+        description: Foreign key referencing the customer who placed the order.
         tests:
           - not_null
           - relationships:
-              field: customer_id
-              to: ref('stg_customers')
+              arguments: 
+                field: customer_id
+                to: ref('stg_customers')
 
   - name: stg_customers
+    description: Staging model containing cleaned customer information from the Olist e-commerce platform. Standardizes column names and data types.
     columns:
       - name: customer_id
         tests:
@@ -26,6 +30,7 @@ models:
         tests:
           - not_null
       - name: customer_zip_code
+        description: Customer zip code prefix.
 
 
 
@@ -35,8 +40,9 @@ models:
         tests:
           - not_null
           - relationships:
-              field: order_id
-              to: ref('stg_orders')
+              arguments: 
+                field: order_id
+                to: ref('stg_orders')
       - name: order_item_id
         tests:
           - not_null
@@ -44,17 +50,20 @@ models:
         tests:
           - not_null
           - relationships:
-              field: product_id
-              to: ref('stg_products')
+              arguments: 
+                field: product_id
+                to: ref('stg_products')
       - name: seller_id
         tests:
           - not_null
           - relationships:
-              field: seller_id
-              to: ref('stg_sellers')
+              arguments: 
+                field: seller_id
+                to: ref('stg_sellers')
     tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns: ['order_id', 'order_item_id']
+          arguments: 
+            combination_of_columns: ['order_id', 'order_item_id']
 
 
   - name: stg_payments
@@ -63,14 +72,26 @@ models:
         tests:
           - not_null
           - relationships:
-              field: order_id
-              to: ref('stg_orders')
+              arguments: 
+                field: order_id
+                to: ref('stg_orders')
       - name: payment_sequential
         tests:
           - not_null
+      - name: payment_type
+        tests:
+          - accepted_values: 
+              arguments: 
+                values:
+                  - "credit_card"
+                  - "boleto"
+                  - "voucher"
+                  - "debit_card"
+                  - "not_defined"
     tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns: ['order_id', 'payment_sequential']
+          arguments: 
+            combination_of_columns: ['order_id', 'payment_sequential']
 
 
   - name: stg_products
@@ -89,8 +110,9 @@ models:
       - name: order_id
         tests:
           - relationships:
-              field: order_id
-              to: ref('stg_orders')
+              arguments: 
+                field: order_id
+                to: ref('stg_orders')
 
 
   - name: stg_sellers

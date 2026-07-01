@@ -1,0 +1,84 @@
+version: 2
+
+models:
+  - name: int_payments_agg
+    description: Aggregated payment metrics at the order grain.
+
+    columns:
+      - name: order_id
+        tests:
+          - unique
+          - not_null
+
+  - name: int_reviews_agg
+    description: Aggregated customer review metrics at the order grain.
+
+    columns:
+      - name: order_id
+        tests:
+          - unique
+          - not_null
+
+
+  - name: int_orders_enriched
+    description: Enriched order-level business model.
+
+    columns:
+      - name: order_id
+        tests:
+          - unique
+          - not_null
+
+      - name: is_missing_delivery_timestamp
+        description: Indicates orders marked as delivered but missing a customer delivery timestamp. Used for data quality monitoring and downstream filtering.
+
+
+  - name: int_order_items_enriched
+    description: Enriched order item model.
+
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          arguments:
+            combination_of_columns:
+              - order_id
+              - order_item_id
+
+  - name: int_payments_enriched
+    description: Enriched payments metrics at the order payment grain.
+
+    columns:
+      - name: order_id
+        description: Foreign key to the order.
+        tests:
+          - not_null
+
+      - name: payment_sequential
+        description: Sequence number of the payment within an order.
+        tests:
+          - not_null
+
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          arguments:
+            combination_of_columns:
+              - order_id
+              - payment_sequential
+
+
+  - name: int_reviews_enriched
+    description: Enriched reviews at the review grain.
+
+    columns:
+      - name: order_id
+        description: Foreign key to the reviewed order.
+        tests:
+          - not_null
+
+      - name: review_score
+        description: Customer review score ranging from 1 to 5.
+        tests:
+          - not_null
+          - accepted_values:
+              arguments:
+                values: [1, 2, 3, 4, 5]
+        

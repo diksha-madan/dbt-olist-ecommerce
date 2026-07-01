@@ -1,0 +1,59 @@
+version: 2
+
+models:
+
+- name: dim_customers
+  columns:
+    - name: customer_id
+      tests:
+        - unique
+        - not_null
+
+- name: dim_products
+  columns:
+    - name: product_id
+      tests:
+        - unique
+        - not_null
+
+- name: dim_dates
+  description: >
+    Calendar dimension generated using dbt_utils.date_spine to support
+    time-based analysis across all business processes.
+
+  columns:
+    - name: date_day
+      description: Calendar date.
+      tests:
+        - unique
+        - not_null
+
+    - name: year
+      description: Calendar year.
+
+    - name: quarter
+      description: Calendar quarter.
+
+    - name: month
+      description: Calendar month number.
+
+    - name: month_name
+      description: Calendar month name.
+
+    - name: year_quarter
+      description: Year and quarter combination.
+
+    - name: week_of_year
+      description: Week number within the year.
+
+    - name: day_of_month
+      description: Day number within the month.
+
+    - name: day_of_week
+      description: Numeric day of week.
+
+    - name: day_name
+      description: Day name.
+
+    - name: is_weekend
+      description: Indicates whether the date falls on a weekend.

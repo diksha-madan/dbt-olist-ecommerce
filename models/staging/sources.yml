@@ -3,15 +3,60 @@ version: 2
 sources:
   - name: raw
     catalog: olist
-    schema: olist_raw
+    schema: olist_daily
+    
 
     tables:
-      - name: olist_customers_dataset
-      - name: olist_geolocation_dataset
-      - name: olist_order_items_dataset 
-      - name: olist_order_payments_dataset 
-      - name: olist_orders_dataset 
-      - name: olist_order_reviews_dataset 
-      - name: olist_products_dataset
-      - name: product_category_name_translation
-      - name: olist_sellers_dataset
+      - name: customers
+        config:
+          freshness:
+            warn_after: {count: 1, period: day}
+            error_after: {count: 2, period: day}
+          loaded_at_field: record_updated_at
+
+      - name: order_items
+        config:
+          freshness:
+            warn_after: {count: 1, period: day}
+            error_after: {count: 2, period: day}
+          loaded_at_field: record_updated_at
+      - name: payments
+        config:
+          freshness:
+            warn_after: {count: 1, period: day}
+            error_after: {count: 2, period: day}
+          loaded_at_field: record_updated_at
+      - name: orders
+        config:
+          freshness:
+            warn_after: {count: 1, period: day}
+            error_after: {count: 2, period: day}
+          loaded_at_field: record_updated_at
+      - name: reviews
+        config:
+          freshness:
+            warn_after: {count: 1, period: day}
+            error_after: {count: 2, period: day}
+          loaded_at_field: record_updated_at
+      - name: products
+        config:
+          freshness:
+            warn_after: {count: 1, period: day}
+            error_after: {count: 2, period: day}
+          loaded_at_field: record_updated_at
+
+      - name: sellers
+        config:
+          freshness:
+            warn_after: {count: 1, period: day}
+            error_after: {count: 2, period: day}
+          loaded_at_field: record_updated_at
+
+  
+
+  - name: raw_static
+    catalog: olist
+    schema: simulated
+
+    tables:
+      - name: geolocation

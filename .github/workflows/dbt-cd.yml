@@ -1,0 +1,30 @@
+name: dbt CD
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  deploy-prod:
+
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install dbt
+        run: |
+          pip install dbt-databricks
+
+      - name: Install dependencies
+        run: |
+          dbt deps
+
+      - name: Run production build
+        run: |
+          dbt build --target prod
