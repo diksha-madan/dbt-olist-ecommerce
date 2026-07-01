@@ -1,7 +1,7 @@
 version: 2
 
 models:
-  - name: stg_orders
+  - name stg_orders
     description: Staging model containing cleaned order-level information.
     columns:
       - name: order_id
