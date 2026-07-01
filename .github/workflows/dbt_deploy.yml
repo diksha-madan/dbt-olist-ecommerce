@@ -1,6 +1,7 @@
 name: Deploy dbt Cloud Job
 
 on:
+  workflow_dispatch:
   push:
     branches:
       - main
