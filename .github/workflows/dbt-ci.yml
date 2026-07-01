@@ -19,3 +19,8 @@ jobs:
       - name: Validate project structure
         run: |
           test -f dbt_project.yml
+
+      - name: Validate YAML
+        run: |
+          pip install yamllint
+          yamllint .
