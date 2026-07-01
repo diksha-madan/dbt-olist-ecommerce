@@ -16,7 +16,7 @@ jobs:
       - name: Trigger dbt Cloud Job
         run: |
           curl --request POST \
-            --url https://cloud.getdbt.com/api/v2/accounts/${{ secrets.DBT_ACCOUNT_ID }}/jobs/${{ secrets.DBT_JOB_ID }}/run/ \
+            --url https://sa632.us1.dbt.com/api/v2/accounts/${{ secrets.DBT_ACCOUNT_ID }}/jobs/${{ secrets.DBT_JOB_ID }}/run/ \
             --header "Authorization: Token ${{ secrets.DBT_API_TOKEN }}" \
             --header "Content-Type: application/json" \
             --data '{"cause":"Triggered from GitHub Actions"}'
