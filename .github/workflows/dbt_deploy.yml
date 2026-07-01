@@ -1,0 +1,21 @@
+name: Deploy dbt Cloud Job
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  deploy:
+
+    runs-on: ubuntu-latest
+
+    steps:
+
+      - name: Trigger dbt Cloud Job
+        run: |
+          curl --request POST \
+            --url https://cloud.getdbt.com/api/v2/accounts/${{ secrets.DBT_ACCOUNT_ID }}/jobs/${{ secrets.DBT_JOB_ID }}/run/ \
+            --header "Authorization: Token ${{ secrets.DBT_API_TOKEN }}" \
+            --header "Content-Type: application/json" \
+            --data '{"cause":"Triggered from GitHub Actions"}'
