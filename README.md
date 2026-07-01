@@ -163,3 +163,16 @@ Key goals included:
 ```
 
 Each layer has a dedicated responsibility, making the project easier to maintain, test, and scale.
+
+# 📚 Documentation
+
+This repository includes detailed engineering documentation for the major architectural components.
+
+| Document | Description |
+|----------|-------------|
+| [Architecture](docs/architecture.md) | System architecture and design principles |
+| [CDC & Incremental Loading](docs/cdc_strategy.md) | Incremental strategies, partitioning, late-arriving data |
+| [Engineering Decisions](docs/engineering_decisions.md) | Design trade-offs and rationale |
+| [CI/CD](docs/cicd.md) | GitHub Actions and dbt Cloud deployment |
+| [Challenges](docs/challenges.md) | Problems encountered and solutions |
+| [Performance Optimization](docs/performance.md) | Incremental processing and cost optimization |
