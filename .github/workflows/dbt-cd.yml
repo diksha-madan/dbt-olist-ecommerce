@@ -7,24 +7,13 @@ on:
 
 jobs:
   deploy-prod:
-
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v4
-
-      - uses: actions/setup-python@v5
-        with:
-          python-version: '3.11'
-
-      - name: Install dbt
+      - name: Trigger dbt Cloud Job
         run: |
-          pip install dbt-databricks
-
-      - name: Install dependencies
-        run: |
-          dbt deps
-
-      - name: Run production build
-        run: |
-          dbt build --target prod
+          curl --request POST \
+            --url https://cloud.getdbt.com/api/v2/accounts/${{ secrets.DBT_ACCOUNT_ID }}/jobs/${{ secrets.DBT_JOB_ID }}/run/ \
+            --header "Authorization: Token ${{ secrets.DBT_API_TOKEN }}" \
+            --header "Content-Type: application/json" \
+            --data '{"cause":"Triggered from GitHub Actions"}'
