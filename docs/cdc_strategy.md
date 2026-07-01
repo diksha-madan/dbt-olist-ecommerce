@@ -267,6 +267,7 @@ Customer 360
 
 One of the challenges encountered during development was handling late-arriving records.
 
+
 A simple watermark approach:
 
 ```
@@ -276,7 +277,7 @@ MAX(record_updated_at)
 
 can permanently miss delayed records that arrive with older timestamps.
 
-To improve resilience, the project uses a configurable **lookback window** when processing incremental data.
+To improve resilience, a configurable 3-day lookback window is used during incremental processing. This window can be adjusted based on source system characteristics and expected ingestion delays.
 
 ```
 Today
