@@ -2,7 +2,7 @@
 
 {{
     config(
-        target_schema = 'snapshots',
+        schema = 'snapshots',
         strategy = 'timestamp',
         unique_key = 'product_id',
         updated_at = 'record_updated_at'

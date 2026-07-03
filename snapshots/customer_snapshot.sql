@@ -2,7 +2,7 @@
 
 {{ 
     config(
-        target_schema = 'snapshots',
+        schema = 'snapshots',
         unique_key = 'customer_id',
         strategy = 'check',
         check_cols = [
