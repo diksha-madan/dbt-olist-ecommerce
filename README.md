@@ -253,11 +253,6 @@ This repository includes detailed engineering documentation for the major archit
 
 ---
 
-# 4. Add Future Improvements
-
-Near the bottom.
-
-```markdown
 # 🔮 Future Improvements
 
 Potential enhancements include:
